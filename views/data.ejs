@@ -20,10 +20,10 @@
             border-collapse: collapse;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             background-color: #fff;
+            margin: 0 auto; /* Centering the table */
         }
 
-        th,
-        td {
+        th,td {
             padding: 12px 15px;
             border: 1px solid #898989;
             text-align: center;
@@ -31,7 +31,7 @@
 
         th {
             background-color: #9efff0;
-            color: #010000;/
+            color: #010000;
         }
 
         th:hover {
@@ -40,6 +40,10 @@
 
         tr:hover {
             background-color: #f5f5f5;
+        }
+
+        tfoot tr:hover {
+            background-color: #6dfdd2; /* Apply hover effect on footer */
         }
 
         @media (max-width: 768px) {
@@ -62,53 +66,47 @@
     <table>
         <thead>
             <tr>
+                <th>No</th>
                 <th>ID</th>
                 <th>Client</th>
                 <th>Age</th>
+                <th>Weight</th>
                 <th>Diagnosis</th>
                 <th>Treatment</th>
                 <th>Complaints</th>
+                <th>Malaria</th>
                 <th>Ward</th>
                 <th>Designation</th>
                 <th>Email</th>
-
             </tr>
         </thead>
         <tbody>
-            <% data.forEach(item=> { %>
+            <% let number = 0; %>
+            <% data.forEach(item => { %>
                 <tr>
-                    <td>
-                        <%= item._id %>
-                    </td>
-                    <td>
-                        <%= item.client %>
-                    </td>
-                    <td>
-                        <%= item.age %>
-                    </td>
-                    <td>
-                        <%= item.diagnosis %>
-                    </td>
-                    <td>
-                        <%= item.treatment %>
-                    </td>
-                    <td>
-                        <%= item.complaints %>
-                    </td>
-                    <td>
-                        <%= item.ward %>
-                    </td>
-                    <td>
-                        <%= item.designation %>
-                    </td>
-                    <td>
-                        <%= item.email %>
-                    </td>
-
+                    <td><%= ++number %></td>
+                    <td><%= item._id %></td>
+                    <td><%= item.client %></td>
+                    <td><%= item.age %></td>
+                    <td><%= item.weight %></td>
+                    <td><%= item.diagnosis %></td>
+                    <td><%= item.treatment %></td>
+                    <td><%= item.complaints %></td>
+                    <td><%= item.malaria %></td>
+                    <td><%= item.ward %></td>
+                    <td><%= item.designation %></td>
+                    <td><%= item.email %></td>
                 </tr>
-                <% }); %>
+            <% }); %>
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="11">Total Entries</td>
+                <td><%= number %> Entries</td>
+            </tr>
+        </tfoot>
     </table>
 </body>
 
 </html>
+
