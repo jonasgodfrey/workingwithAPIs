@@ -1,0 +1,33 @@
+Medical Records Dashboard
+A web-based dashboard for viewing and filtering medical records using Express.js, MongoDB, EJS, and DataTables.
+
+Features
+Paginated, searchable, and sortable table for medical records.
+Filters by categories
+Responsive design using EJS templates.
+
+Tech Stack
+Backend: Node.js, Express.js
+Database: MongoDB
+Frontend: EJS, DataTables (jQuery)
+
+Steps:
+1.index.js
+Import the necessary package
+
+First install the dependency (npm install inthe terminal)
+
+Get a MongoDB uri and give your password for the cluster
+
+Data Scheme model based on the API
+
+Check and insert the data into the database
+
+Using ejs output the data in the table format by using get request
+
+2.Data.ejs
+Create a folder views and create a file name data.ejs
+
+Use the table to display all the data by using forEach loop
+
+use dataTables for pagination (number of data per page), search and sort
