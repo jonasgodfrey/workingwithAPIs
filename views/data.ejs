@@ -7,6 +7,11 @@
     <title>Medical Records</title>
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +20,7 @@
             padding: 20px;
             color: #333;
         }
-    
+
         h1 {
             color: #333;
             margin-bottom: 30px;
@@ -23,7 +28,7 @@
             font-weight: 700;
             text-align: center;
         }
-    
+
         /* Filter Section Styling */
         .filter-section {
             display: flex;
@@ -32,27 +37,27 @@
             gap: 20px;
             margin-bottom: 20px;
         }
-    
+
         .filter-section select {
             padding: 8px;
             border-radius: 6px;
             border: 1px solid #ddd;
             outline: none;
-    
+
         }
-    
+
         .filter-section label {
             font-size: 14px;
             font-weight: bold;
             color: #333;
         }
-    
+
         .filter-section select:focus {
             border-color: #1a73e8;
         }
-    
-         /* Table Section Styling */
-    
+
+        /* Table Section Styling */
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -62,20 +67,20 @@
             border-radius: 8px;
             padding: 10px;
         }
-    
+
         thead {
             position: sticky;
             top: 0;
             color: #fff;
         }
-    
+
         th,
         td {
-    
+
             text-align: center;
             border: 1px solid #ddd;
         }
-    
+
         th {
             /* background-color: #1a73e8; */
             background-color: #333;
@@ -83,39 +88,39 @@
             text-transform: uppercase;
             font-weight: 600;
         }
-    
+
         th:hover {
             background-color: #e3e0e0;
             color: #333;
             cursor: pointer;
         }
-    
+
         tr:nth-child(even) {
             background-color: #f9fafb;
         }
-    
-    
+
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             table {
                 min-width: 600px;
             }
-    
+
             th,
             td {
                 padding: 10px 12px;
                 font-size: 12px;
             }
         }
-    
+
         @media (max-width: 480px) {
-    
+
             th,
             td {
                 padding: 8px 10px;
                 font-size: 11px;
             }
-    
+
             th {
                 font-size: 13px;
             }
@@ -125,7 +130,7 @@
 
 <body>
     <h1>All Medical Records</h1>
-    
+
     <!-- Filters Section -->
     <div class="filter-section">
         <div>
@@ -152,7 +157,7 @@
                 <option value="">All</option>
                 <option value="Positive">Positive</option>
                 <option value="Negative">Negative</option>
-    
+
             </select>
         </div>
 
@@ -202,34 +207,57 @@
                     <th>Gender</th>
                     <th>Outcome</th>
                     <th>ITN</th>
+                    <th>Email</th>
                 </tr>
             </thead>
             <tbody>
-                <% let number = 0; %>
-                <% data.forEach(item => { %>
-                    <tr>
-                        <td><%= ++number %></td>
-                        <td><%= item._id %></td>
-                        <td><%= item.client %></td>
-                        <td><%= item.age %></td>
-                        <td><%= item.weight %></td>
-                        <td><%= item.diagnosis %></td>
-                        <td><%= item.lab_investigation %></td>
-                        <td><%= item.treatment %></td>
-                        <td><%= item.pregnant %></td> 
-                        <td><%= item.sex %></td>   
-                        <td><%= item.outcome_visit %></td>   
-                        <td><%= item.itn %></td>  
-                    </tr>
-                <% }); %>
+                <% let number=0; %>
+                    <% data.forEach(item=> { %>
+                        <tr>
+                            <td>
+                                <%= ++number %>
+                            </td>
+                            <td>
+                                <%= item._id %>
+                            </td>
+                            <td>
+                                <%= item.client %>
+                            </td>
+                            <td>
+                                <%= item.age %>
+                            </td>
+                            <td>
+                                <%= item.weight %>
+                            </td>
+                            <td>
+                                <%= item.diagnosis %>
+                            </td>
+                            <td>
+                                <%= item.lab_investigation %>
+                            </td>
+                            <td>
+                                <%= item.treatment %>
+                            </td>
+                            <td>
+                                <%= item.pregnant %>
+                            </td>
+                            <td>
+                                <%= item.sex %>
+                            </td>
+                            <td>
+                                <%= item.outcome_visit %>
+                            </td>
+                            <td>
+                                <%= item.itn %>
+                            </td>
+                            <td>
+                                <%= item.email %>
+                            </td>
+                        </tr>
+                        <% }); %>
             </tbody>
         </table>
     </div>
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- DataTables JS -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
     <!-- Initialize DataTables with custom filters -->
     <script>
@@ -240,6 +268,10 @@
                 "searching": true, // Enable searching
                 "ordering": true,  // Enable column ordering
                 "lengthChange": true, // Allow users to change page length
+                "columnDefs": [
+                    { "targets": [1, 2, 5, 6, 7, 8, 9, 11, 12], "searchable": true }, // searching for ID column
+                    { "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 11], "orderable": false }   // Disable sorting for ID column
+                ]
             });
 
             /**
@@ -258,20 +290,20 @@
 
                 // Get actual data from the row
                 var pregnancy = data[8].toLowerCase();
-                var patientGender = data[9].toLowerCase(); 
-                var patientDiagnosis = data[5].toLowerCase(); 
-                var patientTreatment = data[7].toLowerCase(); 
+                var patientGender = data[9].toLowerCase();
+                var patientDiagnosis = data[5].toLowerCase();
+                var patientTreatment = data[7].toLowerCase();
                 var labInvestigation = data[6].toLowerCase();
                 var itnCount = data[11].toLowerCase();
 
-               
+
                 if ((pregnancyStatus === '' || pregnancy === pregnancyStatus) &&
                     (gender === '' || patientGender === gender) &&
                     (diagnosis === '' || patientDiagnosis === diagnosis) &&
                     (treatment === '' || patientTreatment === treatment) &&
                     (lab === '' || labInvestigation === lab) &&
-                    (itn ==='' || itnCount === itn)
-                 ){
+                    (itn === '' || itnCount === itn)
+                ) {
                     return true; // Row matches filter conditions
                 }
 
@@ -287,8 +319,6 @@
 </body>
 
 </html>
-
-
 
 
 
