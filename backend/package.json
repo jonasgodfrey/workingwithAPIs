@@ -1,0 +1,19 @@
+{
+  "name": "firebase-population",
+  "version": "1.0.0",
+  "description": "A script to populate Firestore with data from an external API",
+  "main": "populateFirestore.js",
+  "scripts": {
+    "start": "node populateFirestore.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "firebase": "^10.13.2",
+    "firebase-admin": "^12.5.0",
+    "mongodb": "^6.9.0",
+    "mongoose": "^8.7.0"
+  }
+}
