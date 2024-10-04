@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Data Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #a9a9a9;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            display: flexbox;
+            gap: 20px;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .chart-card {
+            padding: 30px 0px;
+            margin-bottom: 50px;
+            border-radius: 12px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            width: 500px !important;
+            height: 350px !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-card">
+            <h2>Pregnant vs Non-pregnant Patients</h2>
+            <canvas id="pregnancyChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>Male vs Female Patients</h2>
+            <canvas id="genderChart"></canvas>
+        </div>
+
+
+    </div>
+
+    <script>
+        // Data passed from the server-side (replace 'chartData' with actual data)
+        const chartData = <%- JSON.stringify(chart) %>;
+
+        // Data Extraction Logic
+        function countByField(field, data, labels) {
+            return labels.map(label => data.filter(item => item[field] === label).length);
+        }
+        
+
+        // Pregnant vs Non-pregnant Patients (Pie Chart)
+        const pregnancyCtx = document.getElementById('pregnancyChart').getContext('2d');
+            new Chart(pregnancyCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Pregnant', 'Non-pregnant'],
+                    datasets: [{
+                        data: countByField('pregnant', chartData, ['yes', 'no']),
+                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                        borderWidth: 1.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+        // Male vs Female Patients (Pie Chart)
+        const genderCtx = document.getElementById('genderChart').getContext('2d');
+            new Chart(genderCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Male', 'Female'],
+                    datasets: [{
+                        data: countByField('sex', chartData, ['male', 'female']),
+                        backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+                        borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
+                        borderWidth: 1.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+       
+    </script>
+    </body>
+    
+    </html>
