@@ -157,6 +157,7 @@
                 <option value="">All</option>
                 <option value="Positive">Positive</option>
                 <option value="Negative">Negative</option>
+                <option value="Invalid">Invalid</option>
 
             </select>
         </div>
@@ -196,7 +197,10 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>ID</th>
+
+                    <th>AFP</th>
+                    <th>Community</th>
+                    <th>LGA</th>
                     <th>Client</th>
                     <th>Age</th>
                     <th>Weight</th>
@@ -208,6 +212,7 @@
                     <th>Outcome</th>
                     <th>ITN</th>
                     <th>Email</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -217,9 +222,17 @@
                             <td>
                                 <%= ++number %>
                             </td>
+
                             <td>
-                                <%= item._id %>
+                                <%= item.afp %>
                             </td>
+                            <td>
+                                <%= item.community %>
+                            </td>
+                            <td>
+                                <%= item.lga %>
+                            </td>
+
                             <td>
                                 <%= item.client %>
                             </td>
@@ -253,6 +266,7 @@
                             <td>
                                 <%= item.email %>
                             </td>
+
                         </tr>
                         <% }); %>
             </tbody>
@@ -268,17 +282,9 @@
                 "searching": true, // Enable searching
                 "ordering": true,  // Enable column ordering
                 "lengthChange": true, // Allow users to change page length
-                "columnDefs": [
-                    { "targets": [1, 2, 5, 6, 7, 8, 9, 11, 12], "searchable": true }, // searching for ID column
-                    { "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 11], "orderable": false }   // Disable sorting for ID column
-                ]
             });
 
-            /**
-             * Custom filter logic based on dropdown selections.
-             * It filters based on Pregnancy Status, Gender, Diagnosis, and Treatment fields.
-             * We ensure the filter values match what's in the table, case insensitively.
-             */
+            /** Custom filter logic based on dropdown selections.  */
             $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
                 // Get selected filter values
                 var pregnancyStatus = $('#pregnancyFilter').val().toLowerCase();
