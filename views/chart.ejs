@@ -5,45 +5,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Data Dashboard</title>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #a9a9a9;
+            background-color: #f1fbf8;
         }
 
+        h1 {
+            color: #333;
+            text-align: center;
+            margin: 30px;
+            font-size: 25px;
+        }
+    
         h2 {
             color: #333;
             text-align: center;
             margin-bottom: 10px;
         }
-
+    
         .container {
-            display: flexbox;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
             margin: 0 auto;
             max-width: 1200px;
         }
-
+    
+        /* Responsive Grid (smaller screens) */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+                /* Single column layout for smaller screens */
+            }
+    
+            canvas {
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
+    
+        /* Responsive Grid for Mobile (even smaller screens) */
+        @media (max-width: 600px) {
+            .chart-card {
+                padding: 20px 10px;
+                margin-bottom: 30px;
+            }
+    
+            canvas {
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
+    
         .chart-card {
-            padding: 30px 0px;
-            margin-bottom: 50px;
-            border-radius: 12px;
+            padding: 20px 0px;
+            margin-bottom: 15px;
+            border-radius: 8px;
             background-color: #ffffff;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease;
+            transition: box-shadow 0.3s ease-in-out;
         }
-
+    
         canvas {
             display: block;
             margin: 0 auto;
-            width: 500px !important;
+            width: 450px !important;
+            /* Default width for larger screens */
             height: 350px !important;
+            /* Default height for larger screens */
         }
     </style>
 </head>
 <body>
+    <h1>DATA VISUALIZATION</h1>
     <div class="container">
         <div class="chart-card">
             <h2>Pregnant vs Non-pregnant Patients</h2>
@@ -55,6 +91,25 @@
             <canvas id="genderChart"></canvas>
         </div>
 
+        <div class="chart-card">
+            <h2>Lab Investigations</h2>
+            <canvas id="labChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>Positive vs Negative Diagnosis</h2>
+            <canvas id="diagnosisChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>Treatments</h2>
+            <canvas id="treatmentChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>ITN (Insecticide Treated Nets)</h2>
+            <canvas id="itnChart"></canvas>
+        </div>
 
     </div>
 
@@ -90,7 +145,7 @@
         // Male vs Female Patients (Pie Chart)
         const genderCtx = document.getElementById('genderChart').getContext('2d');
             new Chart(genderCtx, {
-                type: 'pie',
+                type: 'doughnut',
                 data: {
                     labels: ['Male', 'Female'],
                     datasets: [{
@@ -106,8 +161,81 @@
                 }
             });
 
-       
+        // Lab Investigations (Pie Chart)
+        const labCtx = document.getElementById('labChart').getContext('2d');
+            new Chart(labCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Microscope', 'RDT', 'No Test Done'],
+                    datasets: [{
+                        data: countByField('lab_investigation', chartData, ['microscope', 'RDT', 'no_test_done']),
+                        backgroundColor: ['rgba(153, 102, 255, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(201, 203, 207, 0.2)'],
+                        borderColor: ['rgba(153, 102, 255, 1)', 'rgba(255, 206, 86, 1)', 'rgba(201, 203, 207, 1)'],
+                        borderWidth: 1.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+        // Positive vs Negative Diagnosis (Pie Chart)
+        const diagnosisCtx = document.getElementById('diagnosisChart').getContext('2d');
+            new Chart(diagnosisCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Positive', 'Negative', 'Invalid'],
+                    datasets: [{
+                        data: countByField('diagnosis', chartData, ['positive', 'negative','invalid']),
+                        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)','rgba(153, 102, 255, 0.2)'],
+                        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)','rgba(153, 102, 255, 0.2)'],
+                        borderWidth: 1.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+        // Treatments (Pie Chart)
+        const treatmentCtx = document.getElementById('treatmentChart').getContext('2d');
+            new Chart(treatmentCtx, {
+                type:'bar',
+                data: {
+                    labels: ['SP', 'ACT', 'Artesunate', 'None', 'Other'],
+                    datasets: [{
+                        data: countByField('treatment', chartData, ['sp', 'act', 'artesunate', 'none', 'other_treatment']),
+                        backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(201, 203, 207, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                        borderColor: ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 206, 86, 1)', 'rgba(201, 203, 207, 1)', 'rgba(255, 99, 132, 1)'],
+                        borderWidth: 1.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+        // ITN (Insecticide Treated Nets) (Pie Chart)
+        const itnCtx = document.getElementById('itnChart').getContext('2d');
+            new Chart(itnCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Yes', 'No'],
+                    datasets: [{
+                        data: countByField('itn', chartData, ['yes', 'no']),
+                        backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
+                        borderWidth: 1.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
     </script>
-    </body>
-    
+    </body>   
     </html>
